@@ -1,0 +1,15 @@
+{
+  "name": "master",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "rrweb": "2.0.0-alpha.18",
+    "rrweb-player": "1.0.0-alpha.4"
+  }
+}
