@@ -1,11 +1,8 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import Wujie from 'wujie-vue3';
-// import * as rrweb from 'rrweb';
-import * as rrweb from './rrweb-alpha.18';
 import 'rrweb-player/dist/style.css';
 
-const { record } = rrweb;
 const { setupApp } = Wujie;
 
 const degrade =
@@ -90,40 +87,3 @@ setupApp({
 });
 
 createApp(App).mount('#app');
-
-window.events = [];
-
-record({
-  sampling: {
-    mouseInteraction: {
-      MouseUp: false,
-      MouseDown: false,
-      Click: true,
-      ContextMenu: false,
-      DblClick: false,
-      Focus: false,
-      Blur: false,
-      TouchStart: false,
-      TouchEnd: false,
-    },
-    scroll: 300,
-    input: 'last',
-  },
-  slimDOMOptions: {
-    script: false,
-    comment: false,
-    headFavicon: false,
-    headWhitespace: false,
-    headMetaSocial: false,
-    headMetaRobots: false,
-    headMetaHttpEquiv: false,
-    headMetaVerification: false,
-    headMetaAuthorship: false,
-    headMetaDescKeywords: false,
-    headTitleMutations: false,
-  },
-  keepIframeSrcFn: () => true,
-  emit(event) {
-    window.events.push(event);
-  },
-});

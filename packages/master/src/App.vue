@@ -1,46 +1,82 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import WujieVue from 'wujie-vue3';
-import events from './events.json';
-import rrwebPlayer from 'rrweb-player';
+import { ref, nextTick } from 'vue';
+import Slave from './components/slave.vue';
+import Replay from './components/replay.vue';
+import * as rrweb from 'rrweb';
+// import * as rrweb from './rrweb-alpha.18';
 
-// const slaveRef = ref();
+const { record } = rrweb;
+let stopRecord = null;
+const events = ref([]);
+const showReplay = ref(false);
+const showSlave = ref(false);
 
-// onMounted(() => {
-//   new rrwebPlayer({
-//     target: slaveRef.value,
-//     props: {
-//       events,
-//     },
-//   });
-// });
+const onStartRecord = () => {
+  stopRecord = record({
+    sampling: {
+      mouseInteraction: {
+        MouseUp: false,
+        MouseDown: false,
+        Click: true,
+        ContextMenu: false,
+        DblClick: false,
+        Focus: false,
+        Blur: false,
+        TouchStart: false,
+        TouchEnd: false,
+      },
+      scroll: 300,
+      input: 'last',
+    },
+    slimDOMOptions: {
+      script: false,
+      comment: false,
+      headFavicon: false,
+      headWhitespace: false,
+      headMetaSocial: false,
+      headMetaRobots: false,
+      headMetaHttpEquiv: false,
+      headMetaVerification: false,
+      headMetaAuthorship: false,
+      headMetaDescKeywords: false,
+      headTitleMutations: false,
+    },
+    keepIframeSrcFn: () => true,
+    emit(event) {
+      events.value.push(event);
+    },
+  });
+
+  // keep salve in increase snapshot
+  nextTick(() => {
+    showSlave.value = true;
+  });
+};
+
+const onStopRecord = (evts) => {
+  stopRecord?.();
+  stopRecord = null;
+  showReplay.value = true;
+};
 </script>
 
 <template>
   <div class="master">
-    <h1>master page</h1>
+    <h1>wujie master page</h1>
 
-    <div class="wrapper">
-      <!-- <div class="replay" ref="slaveRef"></div> -->
-      <WujieVue
-        class="slave"
-        width="100%"
-        height="100%"
-        name="slave"
-        url="http://localhost:4444"
-        :sync="true"
-      ></WujieVue>
+    <div class="operation">
+      <button @click="onStartRecord">start record</button>
+      <button @click="onStopRecord">stop record</button>
     </div>
+
+    <slave v-if="showSlave"></slave>
+    <replay v-if="showReplay" :events="events"></replay>
   </div>
 </template>
 
 <style scoped>
-.wrapper {
+.operation {
   display: flex;
-  gap: 24px;
-}
-
-.slave {
-  border: 1px solid #eee;
+  gap: 12px;
 }
 </style>

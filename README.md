@@ -2,7 +2,7 @@
 
 reproduce step
 
-1. use node > 22
+1. use node > 22.12+ (because of vite)
 
 2. pnpm install
 
@@ -10,12 +10,22 @@ reproduce step
 
 4. cd packages/master && pnpm run dev
 
-5. click button to increase count
+5. click button `start record` to start rrweb record
 
-6. console.log(window.events) to get the events
+6. click button `count is 0` to increase count and generate MutationObserver
 
-7. Paste events in event.json file and watch the replay.
+6. click button `stop record` to  stop rrweb record, generate events and show the replay
 
+7. All dom in `wujie slave page` is missing when replay
+
+but when you change `packages/master/src/App.vue` with below changes, and repeat the step above, it works!
+
+```js
+// import * as rrweb from 'rrweb';
+import * as rrweb from './rrweb-alpha.18'; // I updated it with commit change
+```
+
+some related logs:
 
 ```js
 const iframe = window.document.querySelector('IFRAME');

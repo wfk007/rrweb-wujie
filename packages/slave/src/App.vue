@@ -4,7 +4,7 @@ import HelloWorld from './components/HelloWorld.vue';
 
 <template>
   <div>
-    <h2>slave page</h2>
+    <h2>wujie slave page</h2>
     <HelloWorld msg="Vite + Vue" />
   </div>
 </template>
